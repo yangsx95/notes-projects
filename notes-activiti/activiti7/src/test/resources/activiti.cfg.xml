@@ -1,0 +1,27 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--使用默认方式初始化数据库，必须配置一个名称为processEngineConfiguration的Bean-->
+    <bean id="processEngineConfiguration"
+          class="org.activiti.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration">
+        <!--        <property name="jdbcDriver" value="com.mysql.jdbc.Driver"/>-->
+        <!--        <property name="jdbcUrl" value="jdbc:mysql:///activiti?nullCatalogMeansCurrent=true"/>-->
+        <!--        <property name="jdbcUsername" value="activiti"/>-->
+        <!--        <property name="jdbcPassword" value="activiti"/>-->
+        <!--引用连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--生成数据库时的策略-->
+        <!--如果已经存在表，就会直接使用，否则会创建-->
+        <property name="databaseSchemaUpdate" value="true"/>
+    </bean>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql:///activiti?nullCatalogMeansCurrent=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+        <property name="maxActive" value="3"/>
+        <property name="maxIdle" value="1"/>
+    </bean>
+</beans>

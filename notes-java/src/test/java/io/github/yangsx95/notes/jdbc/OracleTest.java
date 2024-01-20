@@ -1,7 +1,7 @@
 package io.github.yangsx95.notes.jdbc;
 
 import oracle.jdbc.OracleDriver;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.sql.*;
 

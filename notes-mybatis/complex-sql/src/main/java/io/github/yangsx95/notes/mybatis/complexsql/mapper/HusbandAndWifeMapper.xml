@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.github.yangsx95.notes.mybatis.complexsql.mapper.HusbandAndWifeMapper">
+
+    <!--方式一-->
+    <select id="findAllHusbandAndWife" resultType="io.github.yangsx95.notes.mybatis.complexsql.pojo.one2one1.HusbandAndWife">
+        select
+            w.wife_name,
+            w.age wife_age,
+            hus.*
+        from MYBATIS.husband hus
+            join MYBATIS.wife w on w.hus_id = HUS.hus_id
+    </select>
+
+    <!--方式二-->
+    <resultMap id="husbandAndWife2ResultMap" type="io.github.yangsx95.notes.mybatis.complexsql.pojo.one2one2.Wife">
+        <id property="wifeId" column="WIFE_ID"/>
+        <result property="wifeName" column="WIFE_NAME"/>
+        <result property="birthday" column="BIRTHDAY"/>
+        <!--关联的husband对象-->
+        <association property="husband" javaType="io.github.yangsx95.notes.mybatis.complexsql.pojo.one2one2.Husband">
+            <id property="husId" column="HUS_ID"/>
+            <result property="husName" column="HUS_NAME"/>
+            <result property="birthday" column="BIRTHDAY"/>
+        </association>
+    </resultMap>
+    <select id="findAllHusbandAndWife2" resultMap="husbandAndWife2ResultMap">
+        SELECT
+            w.wife_name,
+            w.age wife_age,
+            w.BIRTHDAY,
+            hus.*
+        FROM MYBATIS.husband hus
+            JOIN MYBATIS.wife w ON w.hus_id = HUS.hus_id
+    </select>
+
+</mapper>

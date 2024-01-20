@@ -15,7 +15,7 @@
     </settings>
 
     <typeAliases>
-        <typeAlias type="com.yangsx95.demo.pojo.Student" alias="student"/>
+        <typeAlias type="io.github.yangsx95.notes.mybatis.complexsql.pojo.Student" alias="student"/>
     </typeAliases>
 
     <!-- 和spring整合后 environments配置将废除-->
@@ -36,7 +36,7 @@
     <!--加载sql映射文件，否则不会生效-->
     <mappers>
         <!--使用原始的dao开发-->
-        <mapper class="com.yangsx95.demo.mapper.StudentMapper"/>
-        <mapper class="com.yangsx95.demo.mapper.HusbandAndWifeMapper"/>
+        <mapper class="io.github.yangsx95.notes.mybatis.complexsql.mapper.StudentMapper"/>
+        <mapper class="io.github.yangsx95.notes.mybatis.complexsql.mapper.HusbandAndWifeMapper"/>
     </mappers>
 </configuration>

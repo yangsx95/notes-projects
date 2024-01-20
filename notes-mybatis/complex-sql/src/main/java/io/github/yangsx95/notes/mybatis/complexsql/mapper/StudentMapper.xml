@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.github.yangsx95.notes.mybatis.complexsql.mapper.StudentMapper">
+
+    <resultMap id="studentResultMap" type="io.github.yangsx95.notes.mybatis.complexsql.pojo.Student">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="stu_no" property="stuNo"/>
+    </resultMap>
+
+    <!--定义SQL片段-->
+    <sql id="queryAllCol">
+        SELECT *
+        FROM MYBATIS.STUDENT S
+    </sql>
+
+    <!--if语句-->
+    <select id="findAll" parameterType="string" resultMap="studentResultMap">
+        <include refid="queryAllCol"/>
+        WHERE 1 = 1
+        <if test="name !=null and name !=''">
+            AND NAME LIKE '%${name}%'
+        </if>
+    </select>
+
+    <!--where标签语句替代 1=1 -->
+    <select id="findAllStu" parameterType="string" resultMap="studentResultMap">
+        <include refid="queryAllCol"/>
+        <where>
+            <if test="name!=null and name!=''">
+                AND S.NAME LIKE '%${name}%'
+            </if>
+        </where>
+    </select>
+
+    <!--根据id批量查找-->
+    <select id="findByIds" parameterType="arraylist" resultMap="studentResultMap">
+        <include refid="queryAllCol"/>
+        <where>
+            <if test="ids!=null and ids.length>0">
+                <foreach collection="ids" open=" and id in(" close=")" item="id" separator="," index="i">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--根据id批量查找，list版本-->
+    <select id="findByIdsList" parameterType="list" resultMap="studentResultMap">
+        <include refid="queryAllCol"/>
+        <where>
+            <if test="ids!=null and ids.size>0">
+                <foreach collection="ids" open=" and id in(" close=")" item="id" separator="," index="i">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="findByIdsMap" parameterType="map" resultMap="studentResultMap">
+        <include refid="queryAllCol"/>
+        <where>
+            <if test="ids!=null and ids.size>0">
+                <foreach collection="ids" open=" and id in(" close=")" item="id" separator="," index="key">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--多个参数不要指定paramType属性，直接使用变量，或者索引(0,1)即可-->
+    <select id="findByIdAndName" resultMap="studentResultMap">
+        <include refid="queryAllCol"/>
+        <where>
+            <if test="id!=null">
+                AND S.ID = #{id}
+            </if>
+            <if test="name!=null and name!=''">
+                AND S.NAME LIKE '%${name}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getSisterByCode" parameterType="string" resultMap="studentResultMap">
+        <include refid="queryAllCol"/>
+        <where>
+            <choose>
+                <when test="code eq 'zly'">
+                    AND ID = 1
+                </when>
+                <when test="code eq 'sl'">
+                    AND ID = 2
+                </when>
+                <when test="code eq 'dlrb'">
+                    AND ID = 3
+                </when>
+                <when test="code eq 'ym'">
+                    AND ID = 4
+                </when>
+                <when test="code eq 'tly'">
+                    AND ID = 5
+                </when>
+                <otherwise>
+                    AND ID = 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+
+    <!--使用set标签进行更新操作，不用考虑多余的逗号-->
+    <update id="update" parameterType="student">
+        update MYBATIS.STUDENT
+        <set>
+            <if test="student.name!=null">
+                "NAME" = #{student.name},
+            </if>
+            <if test="student.stuNo!=null">
+                STU_NO = #{student.stuNo}
+            </if>
+        </set>
+        where ID = #{student.id}
+    </update>
+
+    <!--使用trim标签去除多余空格内容-->
+    <update id="update1" parameterType="student">
+        update MYBATIS.STUDENT
+        <trim prefix="set" suffixOverrides="," suffix="where id = #{student.id}">
+            <if test="student.name!=null">
+                "NAME" = #{student.name},
+            </if>
+            <if test="student.stuNo!=null">
+                STU_NO = #{student.stuNo},
+            </if>
+        </trim>
+    </update>
+
+</mapper>

@@ -12,7 +12,7 @@
 
     <!--这里指定了typeHandlers，后面再查询参数或者结果上就不用设置typeHandlers了，但是所有的enum都要实现IEnum接口-->
     <typeHandlers>
-        <typeHandler handler="com.yangsx95.demo.enums.MybatisEnumHandler" javaType="com.yangsx95.demo.enums.IEnum"/>
+        <typeHandler handler="io.github.yangsx95.notes.mybatis.enumhandler.enums.MybatisEnumHandler" javaType="io.github.yangsx95.notes.mybatis.enumhandler.enums.IEnum"/>
     </typeHandlers>
 
     <environments default="development">
@@ -28,7 +28,7 @@
     </environments>
 
     <mappers>
-        <mapper class="com.yangsx95.demo.mapper.ComputerMapper"/>
+        <mapper class="io.github.yangsx95.notes.mybatis.enumhandler.mapper.ComputerMapper"/>
     </mappers>
 
 </configuration>

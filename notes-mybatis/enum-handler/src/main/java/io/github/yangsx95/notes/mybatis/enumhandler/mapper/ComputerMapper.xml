@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.yangsx95.notes.mybatis.enumhandler.mapper.ComputerMapper">
+    <!--默认使用typeHandler MybatisEnumHandler-->
+    <select id="findById" parameterType="int" resultType="io.github.yangsx95.notes.mybatis.enumhandler.pojo.Computer">
+        SELECT *
+        FROM MYBATIS.COMPUTER
+        WHERE id = #{id}
+    </select>
+
+    <insert id="save" parameterType="io.github.yangsx95.notes.mybatis.enumhandler.pojo.Computer">
+        <selectKey keyProperty="id" order="BEFORE" resultType="integer">
+            VALUES NEXT VALUE FOR MYBATIS.SQ_COMPUTER
+        </selectKey>
+
+        insert into MYBATIS.COMPUTER (ID, NAME, STATUS)
+        values (${id}, #{name}, #{status})
+    </insert>
+</mapper>

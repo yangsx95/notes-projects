@@ -16,8 +16,8 @@
     
     <!--配置类型别名-->
     <typeAliases>
-        <typeAlias type="com.yangsx95.demo.pojo.User" alias="User"/>
-        <typeAlias type="com.yangsx95.demo.enums.Gender" alias="Gender"/>
+        <typeAlias type="io.github.yangsx95.notes.mybatis.dao.pojo.User" alias="User"/>
+        <typeAlias type="io.github.yangsx95.notes.mybatis.dao.enums.Gender" alias="Gender"/>
     </typeAliases>
     
     <!-- 和spring整合后 environments配置将废除-->

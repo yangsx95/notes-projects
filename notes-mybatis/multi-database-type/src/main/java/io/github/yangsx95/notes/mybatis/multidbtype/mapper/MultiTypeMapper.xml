@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--配置sql映射文件-->
+<mapper namespace="io.github.yangsx95.notes.mybatis.multidbtype.mapper.MultiTypeMapper">
+    <!--时间查询操作，mysql和oracle拥有不同的sql，这是我们要配置databasId-->
+    <select id="getTime" resultType="string" databaseId="mysql">
+        select 'mysql:' || now()
+        from dual
+    </select>
+    <select id="getTime" resultType="string" databaseId="oracle">
+        SELECT 'oralce:' || to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+        FROM dual
+    </select>
+</mapper>

@@ -37,14 +37,14 @@
     | map | Map |
     -->
     <typeAliases>
-        <typeAlias type="com.yangsx95.demo.pojo.User" alias="user"/>
-        <typeAlias type="com.yangsx95.demo.enums.Gender" alias="Gender"/>
+        <typeAlias type="io.github.yangsx95.notes.mybatis.mapper.pojo.User" alias="user"/>
+        <typeAlias type="io.github.yangsx95.notes.mybatis.mapper.enums.Gender" alias="Gender"/>
     </typeAliases>
 
     <!--typeHandler 可以指定类型处理方式，比如枚举的处理方式,每个枚举类型都要定义一次（因为枚举不可继承）
         这边设置后，后面就无需使用typeHandler指定枚举的处理方式-->
     <typeHandlers>
-        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.yangsx95.demo.enums.Gender" jdbcType="NUMERIC"/>
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="io.github.yangsx95.notes.mybatis.mapper.enums.Gender" jdbcType="NUMERIC"/>
     </typeHandlers>
 
     <!-- 和spring整合后 environments配置将废除-->
@@ -65,7 +65,7 @@
 
     <mappers>
         <!--扫描单个mapper-->
-        <mapper class="com.yangsx95.demo.mapper.UserMapper"/>
+        <mapper class="io.github.yangsx95.notes.mybatis.mapper.mapper.UserMapper"/>
 
         <!--扫描整个包下的mapper-->
         <!--<package name="com.yangsx95.demo.mapper"/>-->

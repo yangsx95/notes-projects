@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--1. Mapper.xml文件中的namespace与mapper接口的类路径相同。-->
-<mapper namespace="com.yangsx95.demo.mapper.UserMapper">
+<mapper namespace="io.github.yangsx95.notes.mybatis.mapper.mapper.UserMapper">
 
     <resultMap id="userResultMap" type="user">
         <result column="gender" property="gender" javaType="Gender"

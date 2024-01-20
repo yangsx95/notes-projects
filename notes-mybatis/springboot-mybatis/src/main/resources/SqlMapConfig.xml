@@ -45,10 +45,10 @@
     | map | Map |
     -->
   <!--  <typeAliases>
-        <typeAlias type="com.yangsx95.notes.enums.Gender" alias="Gender"/>
+        <typeAlias type="enums.io.github.yangsx95.notes.mybatis.springboot.Gender" alias="Gender"/>
     </typeAliases>-->
 
     <typeHandlers>
-        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.yangsx95.notes.enums.Gender" jdbcType="NUMERIC"/>
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="io.github.yangsx95.notes.springboot.enums.Gender" jdbcType="NUMERIC"/>
     </typeHandlers>
 </configuration>

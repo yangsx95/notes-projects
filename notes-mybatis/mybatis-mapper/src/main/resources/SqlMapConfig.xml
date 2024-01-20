@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--mybatis全局配置文件-->
+<configuration>
+    <properties resource="config/db.properties"/>
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <!--类型别名定义-->
+    <!--默认的type别名-->
+    <!--
+    | _byte | byte |
+    | _long | long |
+    | _short | short |
+    | _int | int |
+    | _integer | int |
+    | _double | double |
+    | _float | float |
+    | _boolean | boolean |
+    | string | String |
+    | byte | Byte |
+    | long | Long |
+    | short | Short |
+    | int | Integer |
+    | integer | Integer |
+    | double | Double |
+    | float | Float |
+    | boolean | Boolean |
+    | date | Date |
+    | decimal | BigDecimal |
+    | bigdecimal | BigDecimal |
+    | map | Map |
+    -->
+    <typeAliases>
+        <typeAlias type="com.yangsx95.demo.pojo.User" alias="user"/>
+        <typeAlias type="com.yangsx95.demo.enums.Gender" alias="Gender"/>
+    </typeAliases>
+
+    <!--typeHandler 可以指定类型处理方式，比如枚举的处理方式,每个枚举类型都要定义一次（因为枚举不可继承）
+        这边设置后，后面就无需使用typeHandler指定枚举的处理方式-->
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.yangsx95.demo.enums.Gender" jdbcType="NUMERIC"/>
+    </typeHandlers>
+
+    <!-- 和spring整合后 environments配置将废除-->
+    <!-- 这里设置两个环境 开发环境和生产环境，开发环境使用oracle数据库，生产环境使用mysql数据库 -->
+    <environments default="development">
+        <environment id="development">
+            <!-- 使用jdbc事务管理-->
+            <transactionManager type="JDBC"/>
+            <!-- 数据库连接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${h2.driver}"/>
+                <property name="url" value="${h2.url}"/>
+                <property name="username" value="${h2.username}"/>
+                <property name="password" value="${h2.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!--扫描单个mapper-->
+        <mapper class="com.yangsx95.demo.mapper.UserMapper"/>
+
+        <!--扫描整个包下的mapper-->
+        <!--<package name="com.yangsx95.demo.mapper"/>-->
+
+        <!--如果UserMapper.xml放到resources下，则需要指定resources扫描,否则扫描不到-->
+        <mapper resource="mapper/UserMapper.xml"/>
+
+
+
+    </mappers>
+</configuration>

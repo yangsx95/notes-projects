@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--mybatis全局配置文件-->
+<configuration>
+    <properties resource="config/db.properties"/>
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+
+
+    <!-- 这里设置两个环境 ，mysql环境和oracle环境 -->
+    <environments default="mysqlEnv">
+        <environment id="orclEnv">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${orcl.driver}"/>
+                <property name="url" value="${orcl.url}"/>
+                <property name="username" value="${orcl.username}"/>
+                <property name="password" value="${orcl.password}"/>
+            </dataSource>
+        </environment>
+        <environment id="mysqlEnv">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${mysql.driver}"/>
+                <property name="url" value="${mysql.url}"/>
+                <property name="username" value="${mysql.username}"/>
+                <property name="password" value="${mysql.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--支持多个数据库厂商，mybatis可以根据不同的数据库厂商执行不同的语句，
+        厂商的支持，是基于sql映射语句的databaseId属性。
+        MyBatis 会加载不带 databaseId 属性和带有匹配当前数据库 databaseId 属性的所有语句。
+        如果同时找到带有 databaseId 和不带 databaseId 的相同语句，则后者会被舍弃。
+
+        DB_VENDOR 会通过 DatabaseMetaData#getDatabaseProductName() 返回的字符串进行设置
+        由于通常情况下这个字符串都非常长而且相同产品的不同版本会返回不同的值，所以最好通过设置属性别名来使其变短
+    -->
+    <databaseIdProvider type="DB_VENDOR">
+        <property name="Oracle" value="oracle" />
+        <property name="MySQL" value="mysql"/>
+    </databaseIdProvider>
+
+    <!--加载sql映射文件，否则不会生效-->
+    <mappers>
+        <!--使用包扫描的方式，需要给mapper interface添加注解@Mapper-->
+        <package name="com.yangsx95.demo.mapper"/>
+    </mappers>
+</configuration>

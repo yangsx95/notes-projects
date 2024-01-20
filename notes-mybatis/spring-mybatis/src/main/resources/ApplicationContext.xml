@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+    <!-- 加载配置文件 -->
+    <context:property-placeholder location="classpath:config/db.properties"/>
+
+    <!-- 数据库连接池 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="${orcl.driver}"/>
+        <property name="url" value="${orcl.url}"/>
+        <property name="username" value="${orcl.username}"/>
+        <property name="password" value="${orcl.password}"/>
+        <property name="maxActive" value="10"/>
+        <property name="maxIdle" value="5"/>
+    </bean>
+
+    <!--配置全局的单例对象sqlSessionFactory-->
+    <!-- 让spring管理sqlsessionfactory 使用mybatis和spring整合包中的 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 使用外部配置文件创建sqlSessionFactory -->
+        <!-- <property name="configLocation" value="classpath:SqlMapConfig.xml"/>-->
+        <!--使用spring bean创建配置-->
+        <property name="configuration" ref="sqlMapConfig"/>
+
+        <!-- 数据库连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!--别名-->
+        <property name="typeAliasesPackage" value="com.yangsx95.demo.pojo"/>
+        <!-- sql映射文件路径 -->
+        <property name="mapperLocations" value="classpath:com/yangsx95/demo/mapper/*Mapper.xml"/>
+    </bean>
+
+    <bean id="sqlMapConfig" class="org.apache.ibatis.session.Configuration">
+        <property name="cacheEnabled" value="false"/>
+        <property name="defaultStatementTimeout" value="5"/>
+        <property name="mapUnderscoreToCamelCase" value="true"/>
+        <property name="useGeneratedKeys" value="true"/>
+    </bean>
+
+    <!--配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 注入sqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出需要扫描Dao接口包 -->
+        <property name="basePackage" value="com.yangsx95.demo.mapper"/>
+    </bean>
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 注入数据库连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--启用基于注解的事务-->
+    <tx:annotation-driven/>
+</beans>

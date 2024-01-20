@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--mybatis全局配置文件-->
+<configuration>
+    <properties resource="config/db.properties"/>
+
+    <!--全局设置-->
+    <settings>
+        <!--支持驼峰命名-->
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+        <!--打印sql-->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="com.yangsx95.demo.pojo.Student" alias="student"/>
+    </typeAliases>
+
+    <!-- 和spring整合后 environments配置将废除-->
+    <environments default="development">
+        <environment id="development">
+            <!-- 使用jdbc事务管理-->
+            <transactionManager type="JDBC"/>
+            <!-- 数据库连接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${h2.driver}"/>
+                <property name="url" value="${h2.url}"/>
+                <property name="username" value="${h2.username}"/>
+                <property name="password" value="${h2.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--加载sql映射文件，否则不会生效-->
+    <mappers>
+        <!--使用原始的dao开发-->
+        <mapper class="com.yangsx95.demo.mapper.StudentMapper"/>
+        <mapper class="com.yangsx95.demo.mapper.HusbandAndWifeMapper"/>
+    </mappers>
+</configuration>

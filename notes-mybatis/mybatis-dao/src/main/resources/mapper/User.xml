@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--配置sql映射文件-->
+<mapper namespace="userMapper">
+    <!--
+        id sql的唯一标识
+        parameterType 传入的参数的类型
+        resultType 返回结果集类型
+        #{} 占位符，如果是常见的基本类型，那么中的变量名称可以随意设置
+    -->
+
+    <!--配置结果集映射-->
+    <resultMap id="userMapper" type="User">
+        <!--枚举处理，根据ordinal处理,也可以根据name处理 EnumTypeHandler-->
+        <result column="gender" property="gender" javaType="Gender"
+                typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+    </resultMap>
+
+    <!--单条查询语句-->
+    <select id="findById" parameterType="java.lang.Integer" resultMap="userMapper">
+        SELECT *
+        FROM MYBATIS."USER"
+        WHERE id = #{id}
+    </select>
+
+    <!--单条插入语句-->
+    <!--如果插入的是一个pojo类型，则#{}中必须是pojo的属性-->
+    <!--
+        selectKey:用于生成主键
+            keyProperty:返回的主键存储在pojo中的哪个属性
+            order:selectKey的执行顺序（相对于insert语句来说）有berfore和after两种选择:
+                1. oracle/h2的序列需要先生成，所以这里使用berfore
+				2. mysql的自增原理执行完insert语句之后才能将主键生成，mysql需要使用after
+    -->
+    <insert id="save" parameterType="User">
+        <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Integer">
+            VALUES NEXT VALUE FOR MYBATIS.SQ_USER
+        </selectKey>
+        insert into MYBATIS."USER" (ID, USERNAME, PASSWORD, GENDER)
+        VALUES (${id},#{username}, #{password}, #{gender, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler})
+    </insert>
+
+    <!--更新语句-->
+    <!--注意：sql语句尾部不可以加分号，否则会出现ORA-00911:无效字符的错误-->
+    <update id="update" parameterType="User">
+        update MYBATIS."USER"
+        set USERNAME   = #{username},
+            "PASSWORD" = #{password},
+            STATUS     = #{status},
+            DEL_STATUS = #{delStatus},
+            GENDER     = #{gender, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        where ID = #{id}
+    </update>
+
+    <!--根据名称模糊查询多条记录-->
+    <!--注意：sql语句上不可以有注释，否则会被解析为ongl表达式，
+        抛出 org.apache.ibatis.ognl.ExpressionSyntaxException: Malformed OGNL expression:  [org.apache.ibatis.ognl.ParseException-->
+    <!--ognl表达式，类似el表达式，是Structs2使用的一种表达式-->
+    <select id="findAll" parameterType="java.lang.String" resultMap="userMapper">
+        SELECT *
+        from MYBATIS."USER"
+        WHERE USERNAME LIKE '%${value}%'
+    </select>
+
+    <!--删除操作-->
+    <delete id="delById" parameterType="java.lang.Integer">
+        delete
+        from MYBATIS."USER"
+        WHERE ID = ${value}
+    </delete>
+</mapper>

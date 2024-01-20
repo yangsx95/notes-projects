@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--mybatis全局配置文件-->
+<configuration>
+    <settings>
+        <setting name="cacheEnabled" value="false"/>
+        <!-- 全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载 -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!-- 当启用时，有延迟加载属性的对象在被调用时将会完全加载任意属性。否则，每种属性将会按需要加载 -->
+        <setting name="aggressiveLazyLoading" value="true"/>
+        <!-- 指定MyBatis如何自动映射列到字段/属性。PARTIAL只会自动映射简单，没有嵌套的结果。FULL会自动映射任意复杂的结果（嵌套的或其他情况） -->
+        <setting name="autoMappingBehavior" value="FULL" />
+        <setting name="autoMappingUnknownColumnBehavior" value="NONE"/>
+        <!-- @Debug -->
+        <!--<setting name="logImpl" value="STDOUT_LOGGING"/>-->
+        <setting name="logImpl" value="NO_LOGGING"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!--类型别名定义-->
+    <!--默认的type别名-->
+    <!--
+    | _byte | byte |
+    | _long | long |
+    | _short | short |
+    | _int | int |
+    | _integer | int |
+    | _double | double |
+    | _float | float |
+    | _boolean | boolean |
+    | string | String |
+    | byte | Byte |
+    | long | Long |
+    | short | Short |
+    | int | Integer |
+    | integer | Integer |
+    | double | Double |
+    | float | Float |
+    | boolean | Boolean |
+    | date | Date |
+    | decimal | BigDecimal |
+    | bigdecimal | BigDecimal |
+    | map | Map |
+    -->
+  <!--  <typeAliases>
+        <typeAlias type="com.yangsx95.notes.enums.Gender" alias="Gender"/>
+    </typeAliases>-->
+
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.yangsx95.notes.enums.Gender" jdbcType="NUMERIC"/>
+    </typeHandlers>
+</configuration>

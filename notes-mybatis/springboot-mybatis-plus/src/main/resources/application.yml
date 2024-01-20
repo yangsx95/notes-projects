@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:./data/mybatis
+    username: mybatisplus
+    password: mybatisplus
+  # flyway迁移脚本的命名规则为： V版本号__描述信息.sql
+  flyway:
+    enabled: true
+mybatis-plus:
+  configuration:
+    # 开启sql日志打印
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      # 配置默认主键生成策略
+      id-type: assign_id
+      # 配置默认的字段写入策略
+      insert-strategy: not_null
+      update-strategy: not_null
+    # 设置实体类所对应表的统一前缀
+      # table-prefix: _

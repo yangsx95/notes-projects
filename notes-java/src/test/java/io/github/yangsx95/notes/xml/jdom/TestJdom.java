@@ -8,7 +8,6 @@ import org.jdom2.output.XMLOutputter;
 
 import java.io.FileWriter;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 

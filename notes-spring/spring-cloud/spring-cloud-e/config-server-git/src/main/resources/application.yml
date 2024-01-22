@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git: #使用git作为配置仓库
+          uri: https://github.com/xf616510229/repo.git
+          search-paths: spring-cloud-config #服务器搜索地址为uri的仓库下的repo子目录下的所有配置文件
+#          username: trolley # 如果git仓库不是公开访问的，需要设置登陆名和密码
+#          password: strong_password
+          repos: #使用repos配置多个仓库，会自上而下逐个匹配
+            order:
+              pattern: order-*
+              cloneOnStart: true #是否将配置文件克隆到本地
+              uri: https://github.com/xf616510229/repo.git
+            user:
+              pattern: user-*
+              cloneOnStart: false
+              uri: https://github.com/xf616510229/repo.git
+server:
+  port: 8763

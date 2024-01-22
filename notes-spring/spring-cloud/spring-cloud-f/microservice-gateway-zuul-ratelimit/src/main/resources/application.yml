@@ -1,0 +1,72 @@
+server:
+  port: 8777
+spring:
+  application:
+    name: microservice-gateway-zuul-ratelimit
+  redis:
+    database: 0
+    host: 192.168.52.110
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        min-idle: 0
+    timeout: 5000
+logging:
+  level:
+    ROOT: error
+eureka:
+  client:
+    service-url:
+      # 指定eureka server通信地址，注意/eureka/小尾巴不能少
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    # 是否注册ip到eureka server，如果不指定或者设置为false，那就会注册主机名到eureka server
+    prefer-ip-address: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+zuul:
+  # 默认自动映射所有服务，前缀为serviceId
+  ignored-services: '*'
+  # 只忽略指定的微服务
+  # ignored-services: microservice-provider-user,microservice-consumer-movie
+  routes:
+    microservice-consumer-movie-ribbon: /user-ribbon/**
+    user-feign:
+      service-id: microservice-consumer-movie-feign
+      path: /user-feign/**
+    # 不推荐不会负载均衡
+    user-realpath:
+      url: http://localhost:8000/
+      path: /user-realpath/**
+
+  # 限流配置 https://github.com/marcosbarbero/spring-cloud-zuul-ratelimit/
+  ratelimit:
+    enabled: true
+    key-prefix: 'zuul-ratelimit-prefix'
+    repository: REDIS
+    behind-proxy: true
+#    default-policy-list:
+#      - limit: 80
+#        refresh-interval: 60
+    policy-list:
+      # microservice-consumer-movie-ribbon 不能使用，原因不明，需要换一种路由声明方式
+      user-realpath: # 限流的路由，每60s可以处理10个请求，总共请求时间不得超过1000s
+        - limit: 10
+          quota: 20
+          refresh-interval: 60
+      user-feign:
+        - limit: 5
+          refresh-interval: 60
+          type:
+            # 注意，不能前缀 /user-feign
+            - url=/movie/users/1
+  strip-prefix: true

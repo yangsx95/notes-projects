@@ -1,0 +1,13 @@
+logging: # 不是很强大，不能将不同级别的日志输出到不同的文件中
+  config: # 可以使用logback.xml
+  level:
+    root: info #全局日志级别 warn
+    me.feathers.demo: debug #me.feathers.demo包日志级别 debug
+  file: log/my.log
+  pattern: #定义日志输出格式
+    console: %d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n
+    file: %d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n 
+spring:
+  output:
+    ansi:
+      enabled: always  #打印带颜色的日志

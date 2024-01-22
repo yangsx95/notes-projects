@@ -1,0 +1,11 @@
+server:
+  port: 8761
+eureka:
+  # 默认情况下，eureka-server会作为一个服务注册它自己，所以需要禁用他的客户都安行为
+  client:
+    # 是否要注册到其他Eureka Server实例
+    register-with-eureka: false
+    # 是否要从其他Eureka Server实例获取数据
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/

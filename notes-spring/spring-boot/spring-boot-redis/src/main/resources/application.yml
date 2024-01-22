@@ -1,0 +1,40 @@
+#单个数据源配置
+#spring:
+#  redis:
+#    database: 0
+#    host: 39.107.120.250
+#    port: 6379
+#    password: Feathers#521
+#    timeout: 2000ms
+
+###多个数据源配置
+#redis config 
+redis:
+  pool:      
+    blockWhenExhausted: true
+    evictionPolicyClassName: org.apache.commons.pool2.impl.DefaultEvictionPolicy
+    lifo: true
+    maxIdle: 8
+    #maxActive: 8
+    maxTotal: 1000
+    maxWaitMillis: 1000
+    minEvictableIdleTimeMillis: 300000
+    minIdle: 0
+    numTestsPerEvictionRun: 1024
+    softMinEvictableIdleTimeMillis: 1800000
+    testOnBorrow: true
+    testOnCreate: true
+    testOnReturn: true
+    testWhileIdle: true
+    timeBetweenEvictionRunsMillis: 30000 
+  standalone: 
+    userRedis: 
+      host: 39.107.120.250 
+      port: 6379
+      timeout: 10000
+      password: Feathers#521
+    orderRedis: 
+      host: 39.107.120.250 
+      port: 6378
+      timeout: 10000
+      password: Feathers#521

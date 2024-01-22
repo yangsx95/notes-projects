@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="lifecycleTestBean" name="name1,name2,name3" class="me.feathers.lifecycle.BeanLifecycleTestBean" init-method="init" destroy-method="destroy">
+        <constructor-arg name="constructArgs" value="我是构造参数"/>
+        <constructor-arg name="constructBean" ref="constructBean"/>
+        <property name="property1" value="属性1"/>
+        <property name="propertyBean" ref="propertyBean"/>
+    </bean>
+
+    <bean id="constructBean" class="me.feathers.lifecycle.ConstructBean"/>
+    
+    <bean id="propertyBean" class="me.feathers.lifecycle.PropertyBean">
+        <property name="name" value="张三"/>
+        <property name="password" value="123"/>
+    </bean>
+
+    <bean class="me.feathers.lifecycle.MyBeanProcessor"/>
+    
+</beans>

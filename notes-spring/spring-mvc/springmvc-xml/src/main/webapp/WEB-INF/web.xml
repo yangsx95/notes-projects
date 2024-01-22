@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="3.0"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+    <display-name>Spring Web MVC Demo XML</display-name>
+
+    <!--使用spring-web提供的ContextLoaderListener（ServletContextListener），在初始化servlet容器时，初始化根spring ioc容器-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!--ContextLoaderListener会通过寻找如下参数，确定根容器配置文件-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:app-context.xml</param-value>
+    </context-param>
+
+    <!--配置DispatcherServlet，在其内部会初始化Spring Mvc子容器，使用contextConfigLocation指定子容器配置文件-->
+    <servlet>
+        <servlet-name>app</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param><!--指定web mvc子容器的配置文件-->
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:app-mvc-context.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!--DispatcherServlet匹配处理所有以app开头的url链接，并委派组件处理请求-->
+    <servlet-mapping>
+        <servlet-name>app</servlet-name>
+        <url-pattern>/app/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>

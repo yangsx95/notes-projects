@@ -1,0 +1,44 @@
+server:
+  port: 8777
+logging:
+  level:
+    com.netflix: DEBUG
+spring:
+  application:
+    name: microservice-gateway-zuul-filter
+  redis:
+    database: 0
+    host: 192.168.52.110
+    port: 6379
+    password: 
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        min-idle: 0
+    timeout: 5000
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# 在 org.springframework.cloud.netflix.zuul.filters 包下包含了一些spring cloud的filter，这些filter默认就会被启用
+# 如果要禁用，可以使用zuul.<SimpleClassName>.<filterType>.disable=true
+# 如果想要启用，也可以使用 zuul.<SimpleClassName>.<filterType>.disable=false 来启用
+zuul:
+  SendResponseFilter:
+    post: 
+      disable: false
+  PreRequestLogFilter:
+    pre:
+      disable: true
+  RateLimitZuulFilter:
+    pre: 
+      disable: true
+  routes:
+    user:
+      serviceId: microservice-provider-user
+      path: /api/user/**
+        

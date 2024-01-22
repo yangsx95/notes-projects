@@ -1,0 +1,46 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: microservice-consumer-movie-ribbon
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url: 
+      defaultZone: http://localhost:8761/eureka
+ribbon:
+  eager-load:
+    # 关闭懒加载，当有请求进入时才会初始化Ribbon，这会导致首次请求加载过慢问题
+    enabled: true
+    # 饥饿加载的服务
+    clients: microservice-provider-user
+
+#  # 指定全局的IRule，同RibbonClientGlobalConfiguration作用相同
+#  # 此配置优于代码配置
+#  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+## 指定特定的服务的负载均衡方式, 作用和UserRibbonClientConfiguration的作用相同
+#microservice-provider-user:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        # hystrix.stream 用于监控hystrix， 单独放开health无法查看，访问 /actuator/hystrix.stream 可查看断路器的状态
+        include: ['health', "hystrix-stream"]
+
+## 断路器配置，10s内超过5次失败就启用
+#hystrix:
+#  command:
+#    default:
+#      metrics:
+#        rollingStats:
+#          timeInMilliseconds: 10
+#circuitBreaker:
+#  requestVolumeThreshold: 5
+

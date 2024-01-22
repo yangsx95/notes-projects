@@ -1,0 +1,22 @@
+spring:
+  thymeleaf:
+    cache: false # 缓存，开发建议关闭
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    content-type: text/html
+  freemarker:
+#    allow-request-override: false
+#    allow-session-override: false
+    cache: false
+#    charset: UTF-8
+#    content-type: text/html
+#    expose-request-attributes: false
+#    expose-session-attributes: false
+#    expose-spring-macro-helpers: false
+#    prefix: /templates/
+#    suffix: .ftl
+#    request-context-attribute:
+#    settings:
+#    view-names:
+#    template-loader-path:

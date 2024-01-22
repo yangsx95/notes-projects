@@ -1,0 +1,11 @@
+server:
+  port: 8762
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true  #true将ip注册到EurekaServer中，将机器名注册到EurekaServer上
+spring:
+  application:
+    name: eureka-client

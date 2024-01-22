@@ -1,0 +1,13 @@
+# 配置多个数据源
+spring:
+  datasource:
+    primary:
+      jdbc-url: jdbc:mysql://39.107.120.250:3306/test
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+    secondary:
+      jdbc-url: jdbc:mysql://39.107.120.250:3306/test2
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver

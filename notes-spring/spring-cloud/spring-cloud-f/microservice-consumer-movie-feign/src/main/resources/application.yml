@@ -1,0 +1,54 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: microservice-consumer-movie-feign
+logging:
+  level:
+    com.itmuch.cloud.study.user.feign.UserFeignClient: debug
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url: 
+      defaultZone: http://localhost:8761/eureka
+# E版本支持Feign的属性自定义，比如为 feignName 的feign指定自定义配置：
+#feign:
+#  client:
+#    config:
+#      feignName:
+#        connectTimeout: 5000  # 相当于Request.Options
+#        readTimeout: 5000     # 相当于Request.Options
+#        # 配置Feign的日志级别，相当于代码配置方式中的Logger
+#        loggerLevel: full
+#        # Feign的错误解码器，相当于代码配置方式中的ErrorDecoder
+#        errorDecoder: com.example.SimpleErrorDecoder
+#        # 配置重试，相当于代码配置方式中的Retryer
+#        retryer: com.example.SimpleRetryer
+#        # 配置拦截器，相当于代码配置方式中的RequestInterceptor
+#        requestInterceptors:
+#          - com.example.FooRequestInterceptor
+#          - com.example.BarRequestInterceptor
+#        decode404: false 
+
+# 不建议使用重试机制，默认关闭feign的重试，使用ribbon的重试机制
+feign:
+  client:
+    config:
+      # 指定默认配置
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+      # 指定特定的配置
+      microservice-provider-user:
+        loggerLevel: full
+  compression:
+    request:
+      # 针对xml、json请求进行压缩
+      mime-types: text/xml,application/xml,application/json
+      # 请求最小阈值
+      min-request-size: 2048
+      enabled: true
+    response:
+      enable: true

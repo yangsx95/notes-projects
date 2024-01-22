@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--默认使用空构造-->
+    <bean id="service" class="me.feathers.service.TestService"/>
+    
+    <!--使用非空参数构造-->
+    <bean id="serviceHasArgs" class="me.feathers.service.TestService">
+        <constructor-arg name="property" value="testProperty"/>
+    </bean>
+    
+    <!--静态工厂方式， 静态工厂就在当前bean里-->
+    <bean id="serviceStaticFactory" class="me.feathers.service.TestService" factory-method="createInstance"/>
+
+    <!--实例化工厂-->
+    <bean id="serviceLocator" class="me.feathers.service.DefaultServiceLocator"/>
+    
+    <!--使用实例工厂创建bean-->
+    <bean id="accountService"
+          factory-bean="serviceLocator"
+          factory-method="createAccountService"/>
+    <bean id="testService"
+          factory-bean="serviceLocator"
+          factory-method="createTestService"/>
+
+</beans>

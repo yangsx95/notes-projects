@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: eureka-server
+server:
+  port: 8761
+#eureka:
+#  # eureka-server既是服务端，也是客户端，集群部署eureka-server时，每个eureka-server都是其他eureka-server的客户都安
+#  # 所以这里也要配置客户端信息
+#  client:
+#    register-with-eureka: false
+##    # 客户都安要注册到的注册中心的地址，多个使用逗号隔开， 如果register-with-eureka为true，此项必填
+#    service-url:
+#      defaultZone: http://localhost:${server.port}/eureka/
+#    fetch-registry: false

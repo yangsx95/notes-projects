@@ -1,0 +1,6 @@
+------------------------ AnnotationConfigApplication 继承关系，以及相关字段
+DefaultResourceLoader
+
+AbstractApplicationContext
+GenericApplicationContext
+AnnotationConfigApplication

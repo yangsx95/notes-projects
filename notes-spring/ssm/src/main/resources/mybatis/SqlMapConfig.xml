@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE me.feathers.configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<me.feathers.configuration>
+
+    <settings>
+        <setting name="cacheEnabled" value="false"/>
+        <setting name="defaultStatementTimeout" value="5"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="useGeneratedKeys" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <package name="me.feathers.ssm.pojo"/>
+    </typeAliases>
+
+</me.feathers.configuration>

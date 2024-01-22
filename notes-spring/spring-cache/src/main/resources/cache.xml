@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd 
+       http://www.springframework.org/schema/cache 
+       http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/util 
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- <util:constant id="default" static-field="me.feathers.demo.constant.CacheName.DEFAULT" />
+     <util:constant id="userCache" static-field="me.feathers.demo.constant.CacheName.USER_CACHE" />
+     <util:constant id="orderCache" static-field="me.feathers.demo.constant.CacheName.ORDER_CACHE" />
+ -->
+    <!--开启cache注解支持-->
+    <!--<cache:annotation-driven/>-->
+
+    <!--配置cacheManager，spring默认配置方式-->
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <!--定义三个缓存实例，分别为default, userCache, orderCache-->
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name">
+                        <util:constant static-field="me.feathers.demo.constant.CacheName.DEFAULT"/>
+                    </property>
+                </bean>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name">
+                        <util:constant static-field="me.feathers.demo.constant.CacheName.USER_CACHE"/>
+                    </property>
+                </bean>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name">
+                        <util:constant static-field="me.feathers.demo.constant.CacheName.ORDER_CACHE"/>
+                    </property>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+    <!--整合ehcache配置，1.定义cacheManager为ehcacheManager-->
+    <!--注意！！！ehcache 不支持名称为default的缓存，会抛出错误默认的Cache已经被配置 -->
+    <!--<bean id="cacheManager" 
+          class="org.springframework.cache.ehcache.EhCacheCacheManager"
+          p:cache-manager-ref="ehcacheManager"/>
+    <bean id="ehcacheManager" 
+          class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+          p:config-location="ehcache.xml"/>-->
+
+    <!--redis 配置方式-->
+    <!--引入配置文件-->
+    <!--<context:property-placeholder location="classpath:redis.properties"/>
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.maxIdle}" />
+        <property name="maxWaitMillis" value="${redis.maxWait}" />
+        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+    </bean>
+    &lt;!&ndash; 连接工厂 &ndash;&gt;
+    <bean id="jedisConnectionFactory" 
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:host-name="${redis.host}" 
+          p:port="${redis.port}" 
+          p:password="${redis.pass}" 
+          p:pool-config-ref="poolConfig"/>
+    &lt;!&ndash; redis模板 &ndash;&gt;
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+    </bean>
+    &lt;!&ndash;cacheManager&ndash;&gt;
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                &lt;!&ndash; 这里可以配置多个redis &ndash;&gt;
+                <bean class="me.feathers.demo.cache.RedisCache">
+                    <property name="redisTemplate" ref="redisTemplate" />
+                    <property name="name" value="userCache"/>
+                </bean>
+                <bean class="me.feathers.demo.cache.RedisCache">
+                    <property name="redisTemplate" ref="redisTemplate" />
+                    <property name="name" value="default"/>
+                </bean>
+                <bean class="me.feathers.demo.cache.RedisCache">
+                    <property name="redisTemplate" ref="redisTemplate" />
+                    <property name="name" value="orderCache"/>
+                </bean>
+            </set>
+        </property>
+    </bean>-->
+</beans>

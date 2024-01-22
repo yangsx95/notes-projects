@@ -1,0 +1,10 @@
+server:
+  port: 8766
+spring:
+  application:
+    name: config-client #定义{application}
+  cloud:
+    config:
+      uri: http://localhost:8763/ #制定配置中心
+      profile: default #设置配置的profile
+      label: master #设置仓库分支

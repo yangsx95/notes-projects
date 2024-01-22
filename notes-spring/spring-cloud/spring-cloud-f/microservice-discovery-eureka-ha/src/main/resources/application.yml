@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: microservice-discovery-eureka-ha
+
+---
+
+spring:
+  profiles: peer1                                 
+server:
+  port: 8761
+eureka:
+  instance:
+    # 主机名，需要在/etc/hosts中配置
+    hostname: peer1
+  client:
+    # Eureka Server本身也集成了Eureka Client，彼此通过Eureka Client同步数据给其它实例又或者从其他实例同步数据
+    # 是否注册到eureka上，如果需要将当前eureka注册到其他eureka(defaultZone中定义的)上，则设置true
+    # 如果是单机环境，可以设置为false
+    register-with-eureka: false
+    # 是否从其他eureka中同步数据，当前为集群环境，需要同步
+    fetch-registry: true
+    serviceUrl:
+      # 将自己注册到peer2这个Eureka上面去
+      defaultZone: http://peer2:8762/eureka/
+
+---
+
+spring:
+  profiles: peer2
+server:
+  port: 8762
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://peer1:8761/eureka/
+
+# java -jar microservice-discovery-eureka-ha-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer1
+# java -jar microservice-discovery-eureka-ha-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer2
+
+# 注意，一定要配置hosts，因为我们在同一台机器启动两个Eureka，而Eureka对端口不敏感，Eureka Server 会认为这两示例是一个实例，将会造成显示不正常等一系列问题
+
+# 使用多态eureka注册可以使用
+# defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+

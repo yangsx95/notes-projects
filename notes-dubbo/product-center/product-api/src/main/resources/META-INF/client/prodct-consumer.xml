@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans.xsd 
+           http://www.springframework.org/schema/context 
+           http://www.springframework.org/schema/context/spring-context.xsd 
+           http://code.alibabatech.com/schema/dubbo 
+           http://code.alibabatech.com/schema/dubbo/dubbo.xsd" default-autowire="byName">
+
+    <!--允许使用注解调用bean-->
+    <context:annotation-config/>
+
+    <!--dubbo 调用声明 reference，客户端只需import此xml就可以引用OrderService了-->
+    <dubbo:reference id="productService"
+                     interface="io.github.yangsx95.notes.dubbo.productapi.service.ProductService"
+                     version="1.0"/>
+</beans>

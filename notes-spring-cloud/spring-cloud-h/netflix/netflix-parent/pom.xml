@@ -8,7 +8,7 @@
         <groupId>com.yangsx95.demo</groupId>
         <artifactId>spring-cloud-h-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../../spring-cloud-h-parent</relativePath>
+        <relativePath>../../spring-cloud-h-parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>netflix-parent</artifactId>

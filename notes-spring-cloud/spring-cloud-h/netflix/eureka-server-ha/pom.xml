@@ -8,17 +8,12 @@
         <groupId>com.yangsx95.demo</groupId>
         <artifactId>netflix-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../netflix-parent</relativePath>
+        <relativePath>../netflix-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>eureka-server</artifactId>
+    <artifactId>eureka-server-ha</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <description>
-        Netflix Eureka Server Demo， 单机环境
-    </description>
-
-    <!-- eureka 服务端依赖 -->
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -28,12 +23,11 @@
 
     <build>
         <plugins>
-            <!--打包插件-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.yangsx95.demo.netflix.EurekaServerApplication</mainClass>
+                    <mainClass>com.yangsx95.demo.netflix.EurekaServerHaApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

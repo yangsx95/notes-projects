@@ -1,0 +1,65 @@
+1.登陆权限的过滤器Filter.[注意urlPatterns]
+   需要过滤的urlPatterns以/permission/开头
+
+
+   /permission/*
+
+   比如加入Cart的servlet的urlPatterns="/permisson/book/addCart"
+===
+2.主要做购物车
+   实现的技术 - session
+   实际开发中购物车中的内容是需要进行持久化操作的.
+   
+   但是本次开发中,我们主要去熟练操作session
+   作用域中的CRUD 操作!
+
+   当user存在,点击加入购物车按钮
+   瞬间创建HttpSession对象.
+   new Cart()
+===
+	点击加入购物车->servlet->图书的id发送进去
+	->根据图书的id查找图书.
+3
+	->思考购
+333333333物车中是否已经存在了book
+	->所以应该先从session作用域中获取cart
+	[需要进行判断.]
+
+	cart.add(o);
+
+===
+	->如果存在...cart.getItems() - >Map
+
+	->遍历map集合
+	
+	->if(map.containsKey(b.getId())){
+			//根据mapkey获取OrderItem
+			//重新设置OrderItem的总价以及数量
+	}else{
+		  OrderItem o = new ...
+			o.set...
+			o.set....
+			o.set...
+
+			Cart c = new Cart();
+			c.addCart(o); 
+
+
+
+}
+
+
+===
+   private double total; //总费用
+   private int count; //商品总数量
+   Map<Long,OrderItem> map = new HashMap<>();
+
+   public void addCart(OrderItem item){
+		//
+   }
+===
+
+
+
+
+

@@ -1,0 +1,79 @@
+1.登陆权限的过滤器Filter.[注意urlPatterns]
+   需要过滤的urlPatterns以/permission/开头
+
+
+   /permission/*
+
+   比如加入Cart的servlet的urlPatterns="/permisson/book/addCart"
+===
+2.主要做购物车
+   实现的技术 - session
+   实际开发中购物车中的内容是需要进行持久化操作的.
+   
+   但是本次开发中,我们主要去熟练操作session
+   作用域中的CRUD 操作!
+
+   当user存在,点击加入购物车按钮
+   瞬间创建HttpSession对象.
+   new Cart()
+===
+	点击加入购物车->servlet->图书的id发送进去
+	->根据图书的id查找图书.
+
+
+	->思考购物车中是否已经存在了book
+	->所以应该先从session作用域中获取cart
+	[需要进行判断.]
+
+	cart.add(o);
+
+===
+点击图书 - > 后台[需要拿到图书id]
+->根据id获取图书对象
+->OrderItem item = new OrderItem();
+->item.set(...);
+->数量->数字框
+
+->从作用域中获取cart = req.getSession().getA...("cart");
+    if(cart==null){
+       cart = new Cart();
+	}
+	
+	cart.addCart(item);
+	session.setAttribute("cart",cart);
+
+
+===
+   private double total; //总费用
+   private int count; //商品总数量
+   Map<Long,OrderItem> map = new HashMap<>();
+
+   public void addCart(OrderItem item){
+	    map = getItems();
+
+		String isbn = item.getBookIsn();
+		Long ibn = Long.valueOf(isbn);
+		if(map.constainsKey(ibn)){
+			OrderItem im = map.get(ibn);
+
+			//先获取原来的数量
+			double total = im.getTotal();
+			im.setCount(total+item.getCount());
+			im.setTotal(item.get单价()*(total+item.getTotal()));
+		}else{
+			map.put(ibn,item);
+		}
+
+   }
+
+   //获取购物车数据
+  public Map<Long, OrderItem> getItems(){
+	//...
+	return items;
+  }
+===
+
+
+
+
+

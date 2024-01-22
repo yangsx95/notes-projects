@@ -1,0 +1,72 @@
+1.简单的 - 登陆[主要就是利用cookie进行保存密码]
+			    成功:首页,导航栏中需要显示登陆的用户名
+				并且隐藏或者显示一些不必要的列表.
+
+				如果登陆不成功,关于错误提示,由于
+				此处登陆不是一个具体的界面.就没有
+				办法重定向到这个登陆界面.
+
+				登陆的时候,只能通过ajax向后台发送
+				username和password - >JS操作DOM
+
+				如果登陆成功 - window.location="...";
+===
+Dao 
+	->User findByUserName(String username);
+
+Service
+	->User login(String username);
+===
+
+点击图片 - > 加入购物车的页面
+
+===
+明天:
+注册 - register.jsp
+
+图书类型的分类查询.
+===
+登陆流程:
+	文本框1   <span id="s1"></span>
+	密码框1   <span id="s2"></span>
+
+	checkbox
+													按钮[type="button"]
+
+1.第一步:通过按钮的单击事件
+		      单击函数中:
+				  a.分别获取两个文本框中的值
+				  
+				  b.通过ajax将两个值发送到后台.
+				     [post]
+
+					 send("username="+val);
+					 send("password="+pwd)
+
+				  c.后台获取username以及password
+				     调用service层中的方法
+
+					 User u = xxxx.xxxx(username);
+
+					 if(null!=u){
+						if(密码是否正确){
+							//...
+							out.print("2");
+						}else{
+							out.print("1");
+						}
+					 }else{
+						out.print("0");
+					 }
+				 
+				 d.通过responseText来获取后台返回的参数
+				    0 1 2
+
+					0 - > s1对象.innerHTML="";
+
+					1 -> s2....
+
+					2 -> window.location="首页后台".
+====
+
+

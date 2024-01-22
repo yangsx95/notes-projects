@@ -1,0 +1,56 @@
+1-创建Maven工程
+
+   工程名的修改-
+   拷贝:注意web.xml
+		   pom.xml
+
+2.实体类创建好 - 用hibernate生成表结构!
+   [实体类之间的关系]
+===
+3.模拟数据[Book]
+   Dao - > findAll(String bookName,Long styleId,Long pageNow,Long pageSize)
+		  ->  long getRows()
+
+   Service - > PageBean<T> findByPage(String bookName,Long styleId,Long pageNow,Long pageSize);
+   PageBean<T>
+			(String bookName,Long styleId,Long pageNow,Long pageSize)
+4.进行Dao以及Service的单元测试!
+
+额外:将index.html中的导航[包含模态框]以及尾部全部分离出去
+	   然后将这些html文件放入到maven工程中->转换成jsp文件.
+5.控制层:
+       IndexAction
+			->分别按照三个类型进行查询.
+
+			service.findByPage(null,1L,1L,4L);
+			service.findByPage(null,2L,1L,4L);
+			service.findByPage(null,3L,1L,4L);
+			
+			->放入到request作用域首页index.jsp
+			->转发到
+6.点击上一页,下一页,分别通过ajax请求进行分页
+   IndexPageAction
+===
+分离页面:
+	1.webapp
+		 -jsp
+		    -index.jsp
+			-common[封装的是一些公用的页面,只需要保留page指令即可,html,body,head,meta,title不需要]
+			  -\nav.jsp - 导航[第一步:只保留page指令即可]
+              -\footer.jsp - 尾部
+		 -js[外部js不允许使用EL表达式]
+		  -项目需要的js文件全部拷贝
+		 -images
+		  -项目需要的所有的图片全部拷贝.
+		 -css
+		   -项目需要的css文件全部拷贝
+		 -dist
+		 -index.jsp[web.xml中的欢迎页面]
+
+		 [index.jsp->通过c标签重定向到IndexAction
+		 ->转发到jsp目录中的index.jsp]
+
+注意点:由于涉及到项目的上下文路径的获取.
+		   拷贝监听器【负责将上下文路径放入到application作用域中】
+
+		   Filter过滤器[处理编码的]

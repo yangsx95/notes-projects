@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+
+    <!--
+        集中管理属性 property，可以使用 ${name}获取集中管理的属性
+    -->
+
+    <!--日志输出格式：
+        %-5level 日志级别，五个字符宽度，负号代表文字靠左，如果不足五个右侧补充空格
+        %d{yyyy-MM-dd HH:mm:ss.SSS} 日期
+        %c类的完整名称
+        %M为method
+        %L为行号
+        %thread线程名称
+        %m或者%msg为日志消息
+        %n换行
+    -->
+    <property name="pattern" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %c %M %L [%thread] %msg%n"/>
+
+    <!--logback 给日志增加颜色，不能用在文件中 -->
+    <!-- magenta:洋红 -->
+    <!-- boldMagenta:粗红-->
+    <!-- cyan:青色 -->
+    <!-- white:白色 -->
+    <!-- magenta:洋红 -->
+    <property name="color_pattern" value="%highlight([%-5level]) %yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) %blue([%thread]) %boldMagenta(%c.%M:%L) %cyan(%msg%n)"/>
+
+    <!--日志输出格式：html使用，去除多余的空格-->
+    <property name="html_pattern" value="%level%d{yyyy-MM-dd HH:mm:ss.SSS}%c%M%L%thread%msg"/>
+
+    <!--日志文件路径属性-->
+    <property name="log_dir" value="/logs"/>
+
+    <!--自定义属性, 使用${ip}使用-->
+    <define name="ip" class="com.yangsx95.notes.javalog.logback.IPLogDefiner"/>
+
+    <!--================================================================================-->
+    <!--
+        定义 Appender，决定日志输出的位置
+    -->
+
+    <!-- 控制台Appender 对象的xml参数都是class对象的setter方法 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--控制台输出流对象， 默认为System.out，可以更改为System.error-->
+        <target>System.err</target>
+        <!--日志消息格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${color_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 文件Appender -->
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <!--日志文件保存路径-->
+        <file>${log_dir}/logback.log</file>
+        <!--日志消息格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!--过滤高于info级别的日志，包含info-->
+            <level>info</level>
+        </filter>
+    </appender>
+
+    <!--只打印error的文件appender-->
+    <appender name="error_file" class="ch.qos.logback.core.FileAppender">
+        <!--日志文件保存路径-->
+        <file>${log_dir}/logback-error.log</file>
+        <!--日志消息格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+        <!--filter日志过滤，日志级别过滤-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--过滤规则，只打印info级别的日志-->
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+
+
+    <!-- html文件Appender -->
+    <appender name="html_file" class="ch.qos.logback.core.FileAppender">
+        <!--日志文件保存路径-->
+        <file>${log_dir}/logback.html</file>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.html.HTMLLayout">
+                <pattern>${html_pattern}</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!-- 日志拆分与归档压缩 -->
+    <appender name="roll_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件保存路径-->
+        <file>${log_dir}/rollingFile.log</file>
+        <!--日志消息格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+        <!--指定拆分规则 SizeAndTimeBasedRollingPolicy -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--按照时间与压缩格式声明拆分的文件名-->
+            <fileNamePattern>${log_dir}/rolling.%d{yyyy-MM-dd-HH-mm-ss}.log%i.gz</fileNamePattern>
+            <!--按照文件大小拆分-->
+            <maxFileSize>1MB</maxFileSize>
+        </rollingPolicy>
+    </appender>
+
+    <!--异步日志appender-->
+    <appender name="async" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref>roll_file</appender-ref>
+    </appender>
+
+    <!--=========================================================================-->
+    <!--
+        定义并配置logger
+    -->
+
+    <!--根日志记录器，级别为ALL，appender为控制台输出-->
+    <root level="ALL">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+        <appender-ref ref="error_file"/>
+        <appender-ref ref="html_file"/>
+<!--        <appender-ref ref="roll_file"/>-->
+        <appender-ref ref="async"/>
+    </root>
+
+    <!--自定义logger， additivity false代表不会从父logger继承appender-->
+    <logger name="com.yangsx95.notes.test" level="ERROR" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </logger>
+</configuration>

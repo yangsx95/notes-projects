@@ -1,0 +1,14 @@
+# 安装Runc
+---
+- name: "Get Runc"
+  environment: "{{ proxy_env }}"
+  ansible.builtin.get_url:
+    url: "https://github.com/opencontainers/runc/releases/download/{{ runc_release_version }}/runc.arm64"
+    dest: "/root/"
+- name: "Make sure Runc can Install"
+  ansible.builtin.apt:
+    name:
+      - "coreutils"
+    state: present
+- name: "Install Runc"
+  ansible.builtin.shell: install -m 755 /root/runc.arm64 /usr/local/sbin/runc

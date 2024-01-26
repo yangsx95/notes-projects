@@ -1,0 +1,15 @@
+# 为所有节点安装containerd、kubelet
+- hosts: 10.211.55.102
+  remote_user: root
+  become: true
+  tasks:
+  - ansible.builtin.include_vars: vars.yaml
+  - name: "下载KubeKey"
+    environment: "{{ proxy_env }}"
+    ansible.builtin.unarchive:
+      src: https://github.com/kubesphere/kubekey/releases/download/v2.2.1/kubekey-v2.2.1-linux-arm64.tar.gz
+      remote_src: true
+      dest: /root/
+      mode: 777
+# ansible.builtin.shell: /root/kk create cluster --with-kubernetes v1.22.10 --with-kubesphere v3.3.0
+

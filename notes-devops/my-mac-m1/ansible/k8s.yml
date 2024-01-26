@@ -1,0 +1,35 @@
+# 为所有节点安装containerd、kubelet
+- hosts: k8smaster,k8snode
+  remote_user: root
+  become: true
+  tasks:
+  - ansible.builtin.include_vars: vars/vars.yaml
+  - ansible.builtin.include_tasks: tasks/remove-unattended-upgrades.yaml
+  - ansible.builtin.include_tasks: tasks/containerd.yaml
+  - ansible.builtin.include_tasks: tasks/runc.yaml
+  - ansible.builtin.include_tasks: tasks/cni.yaml
+  - ansible.builtin.include_tasks: tasks/k8s-prepare.yaml
+  - ansible.builtin.include_tasks: tasks/kubelet.yaml
+
+# 为master节点安装kubeadm、kubectl
+- hosts: k8smaster
+  tasks:
+  - ansible.builtin.include_vars: vars/vars.yaml
+  - ansible.builtin.include_tasks: tasks/kubeadm.yaml
+
+# 部署集群
+- hosts: k8smaster
+  tags: deployk8s
+  remote_user: root
+  become: true
+  tasks:
+  - ansible.builtin.include_vars: vars/vars.yaml
+  - name: Deploy Kubernetes Master
+    ansible.builtin.shell: |
+      kubeadm init \
+      --apiserver-advertise-address={{ kube_apiserver_address }} \
+      --image-repository registry.aliyuncs.com/google_containers \
+      --kubernetes-version={{ k8s_version }} \
+      --service-cidr=10.96.0.0/12 \
+      --pod-network-cidr=10.244.0.0/16 \
+      --ignore-preflight-errors=all

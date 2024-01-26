@@ -1,0 +1,39 @@
+# 参考：https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+# 参考（aliyun镜像）：https://developer.aliyun.com/mirror/kubernetes/
+  
+---
+- name: "Prepare Kubernetes Install command"
+  ansible.builtin.apt:
+    update_cache: true
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+- name: "Prepare Kubernetes apt-key"
+  ansible.builtin.apt_key:
+    url: https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg
+    state: present
+- name: "Prepare Kubernetes apt-repository"
+  ansible.builtin.apt_repository:
+    repo: deb [trusted=yes] {{ k8s_apt_repository }} kubernetes-xenial main
+    filename: kubernetes
+    state: present
+- name: 允许 iptables 检查桥接流量
+  ansible.builtin.shell: |
+    cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    br_netfilter
+    EOF
+
+    cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+    net.bridge.bridge-nf-call-ip6tables = 1
+    net.bridge.bridge-nf-call-iptables = 1
+    EOF
+
+    modprobe br_netfilter
+    echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+
+    sudo sysctl --system
+
+# echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+# echo "deb [trusted=yes] https://mirrors.ustc.edu.cn/kubernetes/apt/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list

@@ -1,0 +1,11 @@
+# 关闭 unattended upgrades 无人值守更新功能
+# 有事他会占用apt的锁，导致ansible任务失败
+---
+- name: Shutdown unattended-upgrades
+  ansible.builtin.shell: /usr/share/unattended-upgrades/unattended-upgrade-shutdown
+  ignore_errors: true
+- name: Remove unattended-upgrades
+  ansible.builtin.apt:
+    name:
+      - unattended-upgrades
+    state: absent

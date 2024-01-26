@@ -1,0 +1,7 @@
+---
+- name: "Install kubelet"
+  ansible.builtin.apt:
+    update_cache: true
+    name:
+      - kubelet={{ kubelet_version }}
+    state: fixed

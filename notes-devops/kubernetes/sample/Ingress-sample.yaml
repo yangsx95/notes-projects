@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hello-girl
+  name: hello-girl
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-girl
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: hello-girl
+    spec:
+      containers:
+        - image: 192.168.121.67/hello-girl/hello-girl
+          imagePullPolicy: IfNotPresent
+          name: hello-girl
+          resources:
+            request:
+              cpu: 0.5
+              memory: 600Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              httpHeaders:
+                - name: Custom-Header
+                  value: Awesome
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      imagePullSecrets:
+        - name: registry-auth

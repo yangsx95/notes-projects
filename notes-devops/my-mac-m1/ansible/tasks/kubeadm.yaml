@@ -1,0 +1,11 @@
+---
+- name: "Install kubeadm"
+  ansible.builtin.apt:
+    update_cache: true
+    name:
+      - kubeadm={{ kubeadm_version }}
+    state: fixed
+- name: "配置 k8s CRI Endpoint(CRI实现) 指向 containerd"
+  ansible.builtin.shell:
+    crictl config runtime-endpoint unix:///run/containerd/containerd.sock
+    crictl config image-endpoint unix:///run/containerd/containerd.sock

@@ -1,0 +1,15 @@
+containerd_release_version: 1.6.8
+runc_release_version: v1.1.4
+cni_release_version: v1.1.1
+k8s_version: v1.22.3
+kubelet_version: 1.22.3-00
+kubeadm_version: 1.22.3-00
+kubectl_version: 1.22.3-00
+kube_apiserver_address: 10.211.55.100
+
+proxy_env:
+  http_proxy: http://10.211.55.2:7890
+  https_proxy: https://10.211.55.2:7890
+
+k8s_apt_repository: https://mirrors.ustc.edu.cn/kubernetes/apt/
+# k8s_apt_repository: https://mirrors.aliyun.com/kubernetes/apt/

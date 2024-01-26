@@ -1,0 +1,15 @@
+# CNI plugins
+# 参考：https://github.com/containerd/containerd/blob/main/docs/getting-started.md
+
+---
+- name: Make sure cni plugin dir Exist
+  ansible.builtin.file:
+    state: directory
+    path: /opt/cni/bin
+- name: "Get CNI plugins"
+  environment: "{{ proxy_env }}"
+  ansible.builtin.unarchive:
+    src: https://github.com/containernetworking/plugins/releases/download/{{ cni_release_version }}/cni-plugins-linux-arm64-{{ cni_release_version }}.tgz
+    dest: "/opt/cni/bin"
+    remote_src: true
+

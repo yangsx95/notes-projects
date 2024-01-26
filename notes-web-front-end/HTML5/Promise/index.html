@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var success = false;
+        var myFirstPromise = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                if (success)
+                    resolve("成功!"); // 代码执行成功/ajax请求成功
+                else
+                    reject("失败"); // 代码执行失败/ajax请求失败
+            }, 250);
+        });
+
+        myFirstPromise.then(function (successMessage) {
+            document.write("Yay! " + successMessage);
+        }, function (faileMessage) {
+            document.write("Sorry!" + faileMessage);
+        });
+    </script>
+</body>
+
+</html>

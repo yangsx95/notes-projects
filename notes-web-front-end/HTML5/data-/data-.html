@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        .div1 {
+            background-color:yellow;
+            width: 100px;
+            height: 100px;
+        }
+        .div2 {
+            background-color:blue;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 属性名不推荐使用大写字母 -->
+    <div class="div1" data-name="李四" data-age="18"></div>
+    <div class="div1" data-name="张三" data-age="18"></div>
+    <div id="div2" data-name-test="王五"></div>
+
+    <script>
+
+        //************ 使用HTML5语法进行data数据操作
+        var div1 = document.getElementsByClassName("div1")[0];
+        // 存入
+        div1.dataset.hobby={
+            name: "看电影",
+            time: "everytime"
+        };
+        // 取出
+        console.log(div1.dataset.hobby);
+        // 命名驼峰化，属性不允许大写，jsonkey不允许包含“-”
+        var div2 = document.getElementById("div2");
+        // console.log(div2.dataset.name-test); // test is not defined
+        console.log(div2.dataset.nameTest);
+
+        // 删除data属性
+        div2.dataset.nameTest = null;
+        console.log(div2.dataset.nameTest);
+
+        // console.log(div1.dataset.hobby.name); // undefined data-* 只可以存储字符串
+      
+
+        
+        //************** 使用Jquery操作data-
+        
+        // 存入 
+        $(".div1").data("name", "running");
+        
+        // 取出 如果jquery已经在内存中存了值（running），就不会去data属性中取出
+        // 如果内存中没有值，就回去data属性中取，取出匹配的第一个值（两个.div取第一个）
+        console.log($(".div1").data("name")); // running 
+
+        // 删除 只能删除内存中的data
+        $(".div1").removeData("name")
+        console.log($(".div1").data("name"))
+
+        
+        //************* 使用attr操作 略
+
+    </script>
+</body>
+</html>

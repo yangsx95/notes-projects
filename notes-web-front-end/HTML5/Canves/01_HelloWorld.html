@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canves简单示例</title>
+</head>
+<body>
+        
+    <!-- 创建画布 -->
+    <canvas id="myCanvas" width="200px" height="200px" style="border: 1px solid black"></canvas>
+
+<script type="text/javascript">
+    // 使用js再canvas标签区域（画布）中绘制图像
+    // 1. 获取画布
+    var c = document.getElementById("myCanvas");
+    // 2. 创建context对象
+    var ctx = c.getContext("2d");
+    // 3. 绘制红色矩形
+    ctx.fillStyle = "#FF0000";
+    ctx.fillRect(0, 0, 150, 75);
+</script>
+</body>
+</html>

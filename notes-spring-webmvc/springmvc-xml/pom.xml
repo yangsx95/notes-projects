@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.yangsx95.notes</groupId>
-    <artifactId>notes-spring-webmvc</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
+    <groupId>io.github.yangsx95.notes</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <artifactId>springmvc-xml</artifactId>
 
     <name>springmvc-xml</name>
 
@@ -18,12 +18,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
         <!--webmvc依赖了一些spring核心包，包含ioc，aop，spring-web等-->
         <dependency>
             <groupId>org.springframework</groupId>

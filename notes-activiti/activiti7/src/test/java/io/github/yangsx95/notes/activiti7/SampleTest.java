@@ -1,10 +1,7 @@
 package io.github.yangsx95.notes.activiti7;
 
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngines;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
+import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -48,7 +45,7 @@ public class SampleTest {
 
         // 使用部署的流程，发起一个流程实例
         RuntimeService runtimeService = engine.getRuntimeService();
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(DEPLOY_KEY);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(DEPLOY_KEY, "请假单业务id-23");
         Assertions.assertNotNull(processInstance);
 
         // 查询发起的流程实例
@@ -104,4 +101,54 @@ public class SampleTest {
         repositoryService.deleteDeployment(deployment.getId(), true);
     }
 
+    /**
+     * 将流程挂起、激活
+     */
+    @Test
+    public void suspendAndActive() {
+        ProcessEngine engine = ProcessEngines.getDefaultProcessEngine();
+        // 创建部署一个请假申请单流程
+        RepositoryService repositoryService = engine.getRepositoryService();
+        repositoryService.createDeployment()
+                .name("请假申请单")
+                .addClasspathResource("bpmn/leave.bpmn20.xml")
+                .key(DEPLOY_KEY)
+                .deploy();
+
+        // 创建流程实例
+        ProcessInstance processInstance = engine.getRuntimeService()
+                .startProcessInstanceByKey(DEPLOY_KEY, "请检单业务id-100");
+
+        // 判断当前流程实例不是挂起的
+        Assertions.assertFalse(processInstance.isSuspended());
+
+        // 将当前这个流程实例挂起，直挂起当前流程实例
+        engine.getRuntimeService().suspendProcessInstanceById(processInstance.getProcessInstanceId());
+
+        // 挂起后，流程就是挂起状态的，这个状态需要重新查询
+        processInstance = engine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processInstance.getProcessInstanceId()).singleResult();
+        Assertions.assertTrue(processInstance.isSuspended());
+
+        // 重新激活流程
+        engine.getRuntimeService().activateProcessInstanceById(processInstance.getProcessInstanceId());
+
+        // 这个时候状态又变成了激活
+        processInstance = engine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processInstance.getProcessInstanceId()).singleResult();
+        Assertions.assertFalse(processInstance.isSuspended());
+
+
+        // 不仅可以针对流程实例挂起，还可以对指定的流程进行挂起
+        // 被挂起的流程不能发起流程实例，以及发起的流程实例也会处于挂起状态
+        engine.getRepositoryService().suspendProcessDefinitionByKey(processInstance.getProcessDefinitionKey());
+
+        // 流程状态变为挂起时，不可以发起流程
+        Assertions.assertThrowsExactly(ActivitiException.class, () -> {
+            engine.getRuntimeService().startProcessInstanceByKey(DEPLOY_KEY);
+        });
+
+        // 在流程实例挂起前启动的流程实例，不会被挂起
+        processInstance = engine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processInstance.getProcessInstanceId()).singleResult();
+        Assertions.assertFalse(processInstance.isSuspended());
+
+    }
 }

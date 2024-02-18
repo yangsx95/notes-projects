@@ -120,7 +120,7 @@ public class VarTest {
                 .singleResult();
         Assertions.assertEquals(task.getAssignee(), "lisi");
         int days = 10;
-        taskService.setVariables(task.getId(), new HashMap<String, Object>() {{
+        taskService.setVariablesLocal(task.getId(), new HashMap<String, Object>() {{
             put("days", days);
         }});
         taskService.complete(task.getId());

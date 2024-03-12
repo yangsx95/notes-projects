@@ -1,0 +1,34 @@
+# 垂直分库，user表和order表位于两个库中
+spring:
+  application:
+    name: notes-shardingsphere
+  shardingsphere:
+    # 定义ShardingSphere使用的数据源
+    datasource:
+      names: db_order,db_user
+      db_order:
+        type: com.zaxxer.hikari.HikariDataSource
+        drive-class-name: com.mysql.jdbc.Driver
+        url:  jdbc:mysql://127.0.0.1:4406/db_order?characterEncoding=UTF-8&useSSL=false
+        username: root
+        password: root
+      db_user:
+        type: com.zaxxer.hikari.HikariDataSource
+        drive-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:4406/db_user?characterEncoding=UTF-8&useSSL=false
+        username: root
+        password: root
+    # 配置数据节点，让其表名映射为对应的库的表明
+    rules:
+      sharding:
+        tables:
+          pay_order:
+            actual-data-nodes: db_order.pay_order
+          users:
+            actual-data-nodes: db_user.users
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+

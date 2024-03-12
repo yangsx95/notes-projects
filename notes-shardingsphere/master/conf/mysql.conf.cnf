@@ -1,0 +1,11 @@
+[mysqld]
+
+skip-name-resolve
+default_authentication_plugin = mysql_native_password
+
+server-id = 1
+log_bin = 1
+binlog_format = ROW
+#不指定哪些库会被输出到binlog中，所有的库都会被输出到binlog
+#binlog_do_db = mydb
+

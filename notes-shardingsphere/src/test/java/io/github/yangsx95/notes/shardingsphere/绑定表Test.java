@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 水平分表测试
+ * 绑定表测试
  *
  * @author yangshunxiang
  * @since 2024/3/12

@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: notes-shardingsphere
+  shardingsphere:
+    # 定义ShardingSphere使用的数据源，分库后，两个数据源
+    datasource:
+      names: db_contract_0,db_contract_1
+      db_contract_0:
+        type: com.zaxxer.hikari.HikariDataSource
+        drive-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:4406/db_contract_0?characterEncoding=UTF-8&useSSL=false
+        username: root
+        password: root
+      db_contract_1:
+        type: com.zaxxer.hikari.HikariDataSource
+        drive-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:4406/db_contract_1?characterEncoding=UTF-8&useSSL=false
+        username: root
+        password: root
+    # 配置数据节点，指定t_contract的真实表
+    rules:
+      sharding:
+        tables:
+          t_contract:
+            actual-data-nodes: db_contract_$->{0..1}.t_contract_$->{0..1}
+            database-strategy:
+              standard:
+                sharding-column: user_id
+                sharding-algorithm-name: table-mod
+            table-strategy:
+              standard:
+                sharding-column: corder_no
+                sharding-algorithm-name: table-hash-mod
+            key-generate-strategy:
+              column: cid
+              key-generator-name: alg-snowflake
+          t_contract_section:
+            actual-data-nodes: db_contract_$->{0..1}.t_contract_section_$->{0..1}
+            database-strategy:
+              standard:
+                sharding-column: user_id
+                sharding-algorithm-name: table-mod
+            table-strategy:
+              standard:
+                sharding-column: corder_no
+                sharding-algorithm-name: table-hash-mod
+            key-generate-strategy:
+              column: id
+              key-generator-name: alg-snowflake
+        sharding-algorithms:
+          table-mod:
+            type: MOD
+            props:
+              sharding-count: 2
+          table-hash-mod:
+            type: HASH_MOD
+            props:
+              sharding-count: 2
+        key-generators:
+          alg-snowflake:
+            type: SNOWFLAKE
+        # 绑定表，前提是他们的分片策略是相同的
+        binding-tables:
+          - t_contract,t_contract_section
+
+    props:
+      # 打印sql
+      sql-show: true
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

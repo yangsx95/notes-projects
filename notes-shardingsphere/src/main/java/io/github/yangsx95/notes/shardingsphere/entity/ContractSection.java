@@ -10,10 +10,10 @@ import lombok.ToString;
  * @author spikeCong
  * @date 2022/11/11
  **/
-@TableName("t_course_section")
+@TableName("t_contract_section")
 @Data
 @ToString
-public class CourseSection {
+public class ContractSection {
 
     //通过MyBatisPlus生成主键
 //    @TableId(value="cid",type = IdType.ASSIGN_ID)

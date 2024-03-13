@@ -41,3 +41,54 @@ CREATE TABLE db_order.t_course_2
     `status`  INT(11) DEFAULT NULL,
     PRIMARY KEY (`cid`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+CREATE
+DATABASE db_contract_0 CHARACTER SET 'utf8';
+CREATE TABLE db_contract_0.t_contract_0
+(
+    `cid` bigint(20) NOT NULL,
+    `user_id` bigint(20) DEFAULT NULL,
+    `corder_no` bigint(20) DEFAULT NULL,
+    `cname` varchar(50) DEFAULT NULL,
+    `brief` varchar(50) DEFAULT NULL,
+    `price` double DEFAULT NULL,
+    `status` int(11) DEFAULT NULL,
+    PRIMARY KEY (`cid`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+CREATE TABLE db_contract_0.t_contract_1
+(
+    `cid` bigint(20) NOT NULL,
+    `user_id` bigint(20) DEFAULT NULL,
+    `corder_no` bigint(20) DEFAULT NULL,
+    `cname` varchar(50) DEFAULT NULL,
+    `brief` varchar(50) DEFAULT NULL,
+    `price` double DEFAULT NULL,
+    `status` int(11) DEFAULT NULL,
+    PRIMARY KEY (`cid`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+CREATE
+DATABASE db_contract_1 CHARACTER SET 'utf8';
+CREATE TABLE db_contract_1.t_contract_0
+(
+    `cid` bigint(20) NOT NULL,
+    `user_id` bigint(20) DEFAULT NULL,
+    `corder_no` bigint(20) DEFAULT NULL,
+    `cname` varchar(50) DEFAULT NULL,
+    `brief` varchar(50) DEFAULT NULL,
+    `price` double DEFAULT NULL,
+    `status` int(11) DEFAULT NULL,
+    PRIMARY KEY (`cid`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+CREATE TABLE db_contract_1.t_contract_1
+(
+    `cid` bigint(20) NOT NULL,
+    `user_id` bigint(20) DEFAULT NULL,
+    `corder_no` bigint(20) DEFAULT NULL,
+    `cname` varchar(50) DEFAULT NULL,
+    `brief` varchar(50) DEFAULT NULL,
+    `price` double DEFAULT NULL,
+    `status` int(11) DEFAULT NULL,
+    PRIMARY KEY (`cid`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;

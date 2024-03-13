@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: notes-shardingsphere
+  shardingsphere:
+    # 定义ShardingSphere使用的数据源，分库后，两个数据源
+    datasource:
+      names: db_contract_0,db_contract_1
+      db_contract_0:
+        type: com.zaxxer.hikari.HikariDataSource
+        drive-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:4406/db_contract_0?characterEncoding=UTF-8&useSSL=false
+        username: root
+        password: root
+      db_contract_1:
+        type: com.zaxxer.hikari.HikariDataSource
+        drive-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:4406/db_contract_1?characterEncoding=UTF-8&useSSL=false
+        username: root
+        password: root
+    # 配置数据节点，指定t_contract的真实表
+    rules:
+      sharding:
+        tables:
+          t_contract:
+            # 1. 合同表虚拟节点，对应的真实表为
+            actual-data-nodes: db_contract_$->{0..1}.t_contract_$->{0..1}
+            # 2. 指定分库策略
+            database-strategy:
+              standard:
+                # 指定分片键
+                sharding-column: user_id
+                # 指定分片算法
+                sharding-algorithm-name: db-inline
+            # 4. 指定分表策略
+            table-strategy:
+              standard:
+                # 指定分片策略
+                sharding-column: cid
+                # 指定分片算法
+                sharding-algorithm-name: table-inline
+            # 6. 指定分布式序列生成器
+            key-generate-strategy:
+              key-generator-name: alg-snowflake
+              column: cid
+        sharding-algorithms:
+          # 3. 定义名称为db-inline的分片算法
+          db-inline:
+            type: INLINE
+            props:
+              algorithm-expression: db_contract_$->{user_id % 2}
+          # 5. 定义名称为table-inline的分片算法
+          table-inline:
+            type: INLINE
+            props:
+              algorithm-expression: t_contract_$->{Math.abs(cid.hashCode()) % 2}
+        # 7. 定义分布式序列生成器
+        key-generators:
+          alg-snowflake:
+            type: SNOWFLAKE
+    props:
+      # 打印sql
+      sql-show: true
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

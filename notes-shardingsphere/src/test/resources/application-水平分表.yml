@@ -1,0 +1,58 @@
+# 垂直分库，user表和order表位于两个库中
+spring:
+  application:
+    name: notes-shardingsphere
+  shardingsphere:
+    # 定义ShardingSphere使用的数据源
+    datasource:
+      names: db_order
+      db_order:
+        type: com.zaxxer.hikari.HikariDataSource
+        drive-class-name: com.mysql.jdbc.Driver
+        url:  jdbc:mysql://127.0.0.1:4406/db_order?characterEncoding=UTF-8&useSSL=false
+        username: root
+        password: root
+    # 配置数据节点，让其表名映射为对应的库的表明
+    rules:
+      sharding:
+        tables:
+          t_course:
+            # 1. 课程表虚拟节点，对应的真实表为
+            actual-data-nodes: db_order.t_course_$->{1..2}
+            # 2. 配置水平分表的拆分策略  策略=分片键+分片算法
+            table-strategy:
+              standard:
+                # 2.1 指定分片键
+                sharding-column: cid
+                # 2.2 指定分片算法名称，算法名称的算法需要先定义在下面
+                sharding-algorithm-name: table-inline
+            # 4. 分表后，会发生主键重复的问题，可以使用sharding sphere的分片主键生成
+            key-generate-strategy:
+              # 4.1 指定该表的主键字段
+              column: cid
+              # 4.2 指定主键生成器的名字，真实的生成器定义在下方
+              key-generator-name: alg-snowflake
+        # 3. 定义分片算法
+        sharding-algorithms:
+          # 3.1 分片算法名称
+          table-inline:
+            # 3.2 分片算法类型，行表达式分片算法，这个算法类型是内置的
+            type: INLINE
+            # 3.3 行表达式算法需要指定一个表达式属性，表达式属性的含义为如果cid为偶数走 t_course_1 否则走 t_course_2
+            props:
+              algorithm-expression: t_course_$->{cid % 2 + 1}
+
+        # 5. 定义主键生成器
+        key-generators:
+          alg-snowflake:
+            # 使用雪花算法生成ID
+            type: SNOWFLAKE
+    props:
+      # 打印sql
+      sql-show: true
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+

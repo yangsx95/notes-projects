@@ -5,9 +5,7 @@ import io.github.yangsx95.notes.shardingsphere.entity.User;
 import io.github.yangsx95.notes.shardingsphere.mapper.PayOrderMapper;
 import io.github.yangsx95.notes.shardingsphere.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.annotation.Resource;
@@ -19,8 +17,8 @@ import java.util.List;
  * @since 2024/3/12
  */
 @SpringBootTest
-@ActiveProfiles("vehicledb")
-public class VehicleDbTest {
+@ActiveProfiles("垂直分库")
+public class 垂直分库Test {
 
     @Resource
     private UserMapper userMapper;

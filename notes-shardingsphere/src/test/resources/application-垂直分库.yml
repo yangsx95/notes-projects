@@ -26,6 +26,9 @@ spring:
             actual-data-nodes: db_order.pay_order
           users:
             actual-data-nodes: db_user.users
+    props:
+      # 打印sql
+      sql-show: true
 
 mybatis-plus:
   configuration:

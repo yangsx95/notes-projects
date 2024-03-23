@@ -1,0 +1,42 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: product
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      username: nacos
+      password: nacos
+      discovery:
+        enabled: true #启用服务发现
+        server-addr: ${spring.cloud.nacos.server-addr}
+        username: ${spring.cloud.nacos.username}
+        password: ${spring.cloud.nacos.password}
+        namespace: public
+        group: DEFAULT_GROUP
+        service: ${spring.application.name}
+        cluster-name: default
+  datasource:
+    name: "storageDataSource"
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/product?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+seata:
+  registry: # 配置seata使用的注册中心信息，以找到对应seata tc 服务
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.server-addr} # 服务发现地址
+      namespace: public
+      group: DEFAULT_GROUP
+      application: seata-server # tc服务在nacos中的服务名称
+      username: ${spring.cloud.nacos.username}
+      password: ${spring.cloud.nacos.password}
+      cluster: default
+  tx-service-group: seata-default # 定义使用的事务组，并且事务组与cluster的关系
+  service:
+    vgroup-mapping: # 事务组与tc服务cluster的映射关系
+      seata-default: default
+  data-source-proxy-mode: XA

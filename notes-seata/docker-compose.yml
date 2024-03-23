@@ -5,7 +5,8 @@ services:
     container_name: mysql-server
     hostname: mysql-server
     networks:
-      - seata-network
+      default:
+        ipv4_address: 192.167.0.10
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_PORT=3306
@@ -26,7 +27,8 @@ services:
     container_name: nacos-server-standalone
     hostname: nacos-server
     networks:
-      - seata-network
+      default:
+        ipv4_address: 192.167.0.11
     environment:
       - PREFER_HOST_MODE=hostname
       - MODE=standalone
@@ -59,7 +61,8 @@ services:
     image: seataio/seata-server:2.0.0-slim
     hostname: seata-server
     networks:
-      - seata-network
+      default:
+        ipv4_address: 192.167.0.12
     ports:
       - "8091:8091"
       - "7091:7091"
@@ -69,8 +72,14 @@ services:
     expose:
       - 8091
       - 7091
+    environment:
+      - SEATA_IP=192.168.1.5 # 【这里要改！！！】指定serverIp，如果不指定就是容器的ip，这样没法正常访问服务
     depends_on:
       nacos-server:
         condition: service_healthy
 networks:
-  seata-network:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.167.0.0/16

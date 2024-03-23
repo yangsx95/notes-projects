@@ -1,0 +1,8 @@
+### 添加一笔订单 （正常情况）
+GET http://localhost:8081/order/add?orderNo=O001&productNo=P001&accountNo=A001&amount=10&count=1
+
+### 添加一笔订单 （余额不足）
+GET http://localhost:8081/order/add?orderNo=O002&productNo=P002&accountNo=A002&amount=200&count=2
+
+### 添加一笔订单 （库存不足）
+GET http://localhost:8081/order/add?orderNo=O003&productNo=P003&accountNo=A003&amount=30&count=300
